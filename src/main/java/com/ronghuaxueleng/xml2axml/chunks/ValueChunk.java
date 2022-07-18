@@ -10,9 +10,6 @@ import java.io.IOException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-/**
- * Created by Roy on 15-10-6.
- */
 public class ValueChunk extends Chunk<Chunk.EmptyHeader> {
 
     class ValPair {
@@ -56,7 +53,7 @@ public class ValueChunk extends Chunk<Chunk.EmptyHeader> {
 
     public ValueChunk(AttrChunk parent) {
         super(parent);
-        header.size=8;
+        header.size = 8;
         this.attrChunk = parent;
     }
 
@@ -69,8 +66,8 @@ public class ValueChunk extends Chunk<Chunk.EmptyHeader> {
     public void writeEx(IntWriter w) throws IOException {
         w.write(size);
         w.write(res0);
-        if (type== ValueType.STRING){
-            data=stringIndex(null,realString);
+        if (type == ValueType.STRING) {
+            data = stringIndex(null, realString);
         }
         w.write(type);
         w.write(data);
@@ -133,7 +130,7 @@ public class ValueChunk extends Chunk<Chunk.EmptyHeader> {
             String v = m.group(2);
             if (t == null || t.isEmpty() || t.equals("string") || t.equals("str")) {
                 type = ValueType.STRING;
-                realString=v;
+                realString = v;
                 stringPool().addString(realString);
                 //data = stringIndex(null, v);
             } else {
@@ -163,7 +160,7 @@ public class ValueChunk extends Chunk<Chunk.EmptyHeader> {
                         break;
                     case 5:
                         type = ValueType.INT_HEX;
-                        data = Integer.parseInt(vp.val.substring(2),16);
+                        data = Integer.parseInt(vp.val.substring(2), 16);
                         break;
                     case 6:
                         type = ValueType.FLOAT;
@@ -187,14 +184,14 @@ public class ValueChunk extends Chunk<Chunk.EmptyHeader> {
                         break;
                     default:
                         type = ValueType.STRING;
-                        realString=vp.val;
+                        realString = vp.val;
                         stringPool().addString(realString);
                         //data = stringIndex(null, attrChunk.rawValue);
                         break;
                 }
             } else {
                 type = ValueType.STRING;
-                realString=attrChunk.rawValue;
+                realString = attrChunk.rawValue;
                 stringPool().addString(realString);
                 //data = stringIndex(null, attrChunk.rawValue);
             }

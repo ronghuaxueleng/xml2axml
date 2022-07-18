@@ -7,16 +7,11 @@ import com.ronghuaxueleng.xml2axml.ReferenceResolver;
 
 import java.io.IOException;
 
-/**
- * Created by Roy on 15-10-4.
- */
 
-
-
-public class XmlChunk extends Chunk<XmlChunk.H>{
+public class XmlChunk extends Chunk<XmlChunk.H> {
     public XmlChunk(Context context) {
         super(null);
-        this.context=context;
+        this.context = context;
     }
 
     public class H extends Chunk.Header {
@@ -30,13 +25,14 @@ public class XmlChunk extends Chunk<XmlChunk.H>{
 
         }
     }
-    public StringPoolChunk stringPool=new StringPoolChunk(this);
-    public ResourceMapChunk resourceMap=new ResourceMapChunk(this);
+
+    public StringPoolChunk stringPool = new StringPoolChunk(this);
+    public ResourceMapChunk resourceMap = new ResourceMapChunk(this);
     public TagChunk content;
 
     @Override
     public void preWrite() {
-        header.size=header.headerSize+content.calc()+stringPool.calc()+resourceMap.calc();
+        header.size = header.headerSize + content.calc() + stringPool.calc() + resourceMap.calc();
     }
 
     @Override
@@ -52,9 +48,10 @@ public class XmlChunk extends Chunk<XmlChunk.H>{
     }
 
     private ReferenceResolver referenceResolver;
+
     @Override
     public ReferenceResolver getReferenceResolver() {
-        if (referenceResolver==null) referenceResolver= new DefaultReferenceResolver();
+        if (referenceResolver == null) referenceResolver = new DefaultReferenceResolver();
         return referenceResolver;
     }
 }

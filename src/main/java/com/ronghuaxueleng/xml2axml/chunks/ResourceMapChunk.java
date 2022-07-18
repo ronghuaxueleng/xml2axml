@@ -6,12 +6,9 @@ import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 
-/**
- * Created by Roy on 15-10-6.
- */
-public class ResourceMapChunk extends Chunk<ResourceMapChunk.H>{
+public class ResourceMapChunk extends Chunk<ResourceMapChunk.H> {
 
-    public class H extends Chunk.Header{
+    public class H extends Chunk.Header {
 
         public H() {
             super(ChunkType.XmlResourceMap);
@@ -31,20 +28,20 @@ public class ResourceMapChunk extends Chunk<ResourceMapChunk.H>{
 
     @Override
     public void preWrite() {
-        List<StringPoolChunk.RawString> rss=stringPool().rawStrings;
-        ids=new LinkedList<Integer>();
-        for (StringPoolChunk.RawString r:rss){
-            if (r.origin.id>=0){
+        List<StringPoolChunk.RawString> rss = stringPool().rawStrings;
+        ids = new LinkedList<Integer>();
+        for (StringPoolChunk.RawString r : rss) {
+            if (r.origin.id >= 0) {
                 ids.add(r.origin.id);
-            }else{
+            } else {
                 break;
             }
         }
-        header.size=ids.size()*4+header.headerSize;
+        header.size = ids.size() * 4 + header.headerSize;
     }
 
     @Override
     public void writeEx(IntWriter w) throws IOException {
-        for (int i:ids) w.write(i);
+        for (int i : ids) w.write(i);
     }
 }

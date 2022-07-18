@@ -1,8 +1,5 @@
 package com.ronghuaxueleng.xml2axml;
 
-/**
- * Created by Roy on 15-10-5.
- */
 public class ComplexConsts {
     // Where the unit type information is.  This gives us 16 possible
     // types, as defined below.

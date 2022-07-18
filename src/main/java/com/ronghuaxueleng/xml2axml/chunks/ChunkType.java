@@ -27,8 +27,8 @@ enum ChunkType {
     public final short headerSize;
 
     ChunkType(int type, int headerSize) {
-        this.type = (short)type;
-        this.headerSize = (short)headerSize;
+        this.type = (short) type;
+        this.headerSize = (short) headerSize;
     }
 };
 

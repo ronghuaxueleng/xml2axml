@@ -13,40 +13,39 @@ import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.StringReader;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
-/**
- * Created by Roy on 15-10-4.
- */
 public class Encoder {
 
-    public static class Config{
-        public static StringPoolChunk.Encoding encoding= StringPoolChunk.Encoding.UNICODE;
-        public static int defaultReferenceRadix=16;
+    public static class Config {
+        public static StringPoolChunk.Encoding encoding = StringPoolChunk.Encoding.UNICODE;
+        public static int defaultReferenceRadix = 16;
     }
 
     public byte[] encodeFile(Context context, String filename) throws XmlPullParserException, IOException {
-        XmlPullParserFactory f=XmlPullParserFactory.newInstance();
-        f.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES,true);
-        XmlPullParser p=f.newPullParser();
-        p.setInput(new FileInputStream(filename),"UTF-8");
-        return encode(context,p);
+        XmlPullParserFactory f = XmlPullParserFactory.newInstance();
+        f.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES, true);
+        XmlPullParser p = f.newPullParser();
+        p.setInput(Files.newInputStream(Paths.get(filename)), "UTF-8");
+        return encode(context, p);
     }
 
     public byte[] encodeString(Context context, String xml) throws XmlPullParserException, IOException {
-        XmlPullParserFactory f=XmlPullParserFactory.newInstance();
-        f.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES,true);
-        XmlPullParser p=f.newPullParser();
+        XmlPullParserFactory f = XmlPullParserFactory.newInstance();
+        f.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES, true);
+        XmlPullParser p = f.newPullParser();
         p.setInput(new StringReader(xml));
-        return encode(context,p);
+        return encode(context, p);
     }
 
     public byte[] encode(Context context, XmlPullParser p) throws XmlPullParserException, IOException {
-        if (context==null) context=new Context();
-        XmlChunk chunk=new XmlChunk(context);
+        if (context == null) context = new Context();
+        XmlChunk chunk = new XmlChunk(context);
         //HashSet<String> strings=new HashSet<String>();
-        TagChunk current=null;
-        for (int i=p.getEventType();i!=XmlPullParser.END_DOCUMENT;i=p.next()){
-            switch (i){
+        TagChunk current = null;
+        for (int i = p.getEventType(); i != XmlPullParser.END_DOCUMENT; i = p.next()) {
+            switch (i) {
                 case XmlPullParser.START_DOCUMENT:
                     break;
                 case XmlPullParser.START_TAG:
@@ -64,11 +63,11 @@ public class Encoder {
                         strings.add(p.getNamespacePrefix(j));
                         strings.add(p.getNamespaceUri(j));
                     }*/
-                    current=new TagChunk(current==null?chunk:current,p);
+                    current = new TagChunk(current == null ? chunk : current, p);
                     break;
                 case XmlPullParser.END_TAG:
-                    Chunk c=current.getParent();
-                    current=c instanceof TagChunk?(TagChunk)c:null;
+                    Chunk c = current.getParent();
+                    current = c instanceof TagChunk ? (TagChunk) c : null;
                     break;
                 case XmlPullParser.TEXT:
                     //strings.add(p.getText());
@@ -79,8 +78,8 @@ public class Encoder {
             }
         }
         //for (String s:strings) if (s!=null) chunk.stringPool.addString(s);
-        ByteArrayOutputStream os=new ByteArrayOutputStream();
-        IntWriter w=new IntWriter(os);
+        ByteArrayOutputStream os = new ByteArrayOutputStream();
+        IntWriter w = new IntWriter(os);
         chunk.write(w);
         w.close();
         return os.toByteArray();

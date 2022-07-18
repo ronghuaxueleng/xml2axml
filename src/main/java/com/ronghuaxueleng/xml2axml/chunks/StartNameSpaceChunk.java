@@ -4,19 +4,16 @@ import com.ronghuaxueleng.xml2axml.IntWriter;
 
 import java.io.IOException;
 
-/**
- * Created by Roy on 15-10-5.
- */
-public class StartNameSpaceChunk extends Chunk<StartNameSpaceChunk.H>{
+public class StartNameSpaceChunk extends Chunk<StartNameSpaceChunk.H> {
 
     public StartNameSpaceChunk(Chunk parent) {
         super(parent);
     }
 
-    public class H extends Chunk.NodeHeader{
+    public class H extends Chunk.NodeHeader {
         public H() {
             super(ChunkType.XmlStartNamespace);
-            size=0x18;
+            size = 0x18;
         }
     }
 
@@ -25,7 +22,7 @@ public class StartNameSpaceChunk extends Chunk<StartNameSpaceChunk.H>{
 
     @Override
     public void writeEx(IntWriter w) throws IOException {
-        w.write(stringIndex(null,prefix));
-        w.write(stringIndex(null,uri));
+        w.write(stringIndex(null, prefix));
+        w.write(stringIndex(null, uri));
     }
 }
