@@ -1,0 +1,2 @@
+# xml2axml
+二进制类型的AXML和文本类型的AXML进行相互转换，加密解密apk中的AndroidManifest.xml及res中的xml文件
